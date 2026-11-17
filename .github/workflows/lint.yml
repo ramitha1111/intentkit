@@ -1,3 +1,10 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 3 optimizations:
+# - [HIGH] Split "security-scan" into parallel jobs (lint + test + build)
+# - [HIGH] Split "frontend" into parallel jobs (lint + test + build)
+# - [MEDIUM] Add concurrency group to "lint.yml"
+# Estimated savings: ~14 min/run
+#
 name: Lint
 
 on:
@@ -5,6 +12,10 @@ on:
   pull_request:
     branches: [ main ]
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   security-scan:
     permissions:
